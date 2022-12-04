@@ -28,5 +28,43 @@ public class Site {
     @OneToMany(mappedBy = "site", fetch = FetchType.LAZY)
     private Set<Page> pages = new HashSet<>();
 
+    public Status getStatus() {
+        return status;
+    }
 
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public Date getStatusTime() {
+        return statusTime;
+    }
+
+    public void setStatusTime(Date statusTime) {
+        this.statusTime = statusTime;
+    }
+
+    public String getLastError() {
+        return lastError;
+    }
+
+    public void setLastError(String lastError) {
+        this.lastError = lastError;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }
