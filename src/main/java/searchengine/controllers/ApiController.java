@@ -36,7 +36,7 @@ public class ApiController {
     }
 
     public void startIndexing(){
-        String[] sites = null; //TODO get sites from application.yaml
+        String[] sites = null; //TODO get sites from application.yml
         for(int i = 0; i < sites.length; i++){
 
             String domain = sites[i].substring(9);
