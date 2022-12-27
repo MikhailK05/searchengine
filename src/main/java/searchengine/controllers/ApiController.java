@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import searchengine.config.SitesList;
 import searchengine.dto.statistics.StatisticsResponse;
 import searchengine.model.PageRepository;
 import searchengine.model.Site;
@@ -15,11 +16,14 @@ import searchengine.services.PageProcessor;
 import searchengine.services.SiteBuilder;
 import searchengine.services.StatisticsService;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 @RestController
 @RequestMapping("/api")
 public class ApiController {
+    @Autowired
+    private SitesList list;
     @Autowired
     private PageRepository pageRepository;
     @Autowired
@@ -35,10 +39,15 @@ public class ApiController {
         return ResponseEntity.ok(statisticsService.getStatistics());
     }
 
-    public void startIndexing(){
-        String[] sites = null; //TODO get sites from application.yml
-        for(int i = 0; i < sites.length; i++){
+    public String[] getListArray(){
+        String[] array = new String[list.getSites().size()];
+        return list.getSites().toArray(array);
+    }
 
+    public void startIndexing(){
+        String[] sites = getListArray();
+        for(int i = 0; i < sites.length; i++){
+            System.out.println(sites[i]);
             String domain = sites[i].substring(9);
             Date now = new Date();
             Site site = new Site();
@@ -56,7 +65,6 @@ public class ApiController {
             site.setLastError("");
             site.setStatusTime(now);
             siteRepository.save(site);
-            //TODO make adequate site saving
         }
     }
 }
