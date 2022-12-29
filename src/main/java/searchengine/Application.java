@@ -2,6 +2,7 @@ package searchengine;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import searchengine.controllers.ApiController;
 
 @SpringBootApplication
 public class Application {
