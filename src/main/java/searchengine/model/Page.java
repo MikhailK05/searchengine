@@ -1,7 +1,5 @@
 package searchengine.model;
 
-import com.sun.istack.NotNull;
-
 import javax.persistence.*;
 
 @Entity

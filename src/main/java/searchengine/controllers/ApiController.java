@@ -39,31 +39,29 @@ public class ApiController {
         return ResponseEntity.ok(statisticsService.getStatistics());
     }
 
-    public String[] getListArray(){
-        String[] array = new String[list.getSites().size()];
-        return list.getSites().toArray(array);
-    }
-
+    @GetMapping("/startIndexing")
     public void startIndexing(){
-        String[] sites = getListArray();
-        for(int i = 0; i < sites.length; i++){
-            System.out.println(sites[i]);
-            String domain = sites[i].substring(9);
+        ArrayList<searchengine.config.Site> sites = (ArrayList) list.getSites();
+        for(int i = 0; i < sites.size(); i++){
+            System.out.println(sites.get(i).getUrl());
+            String domain = sites.get(i).getUrl().substring(8);
             Date now = new Date();
             Site site = new Site();
-            site.setUrl(sites[i]);
+            site.setUrl(sites.get(i).getUrl());
             site.setName(domain);
             site.setStatus(Status.INDEXING);
             site.setStatusTime(now);
+            site.setLastError("-");
             siteRepository.save(site);
 
-            PageNode root = new PageNode(sites[i]);
+            PageNode root = new PageNode(sites.get(i).getUrl());
             PageProcessor processor = new PageProcessor(root, domain);
             SiteBuilder builder = new SiteBuilder(processor, pageRepository);
             new Thread(builder).start();
 
             site.setLastError("");
             site.setStatusTime(now);
+            site.setStatus(Status.INDEXED);
             siteRepository.save(site);
         }
     }

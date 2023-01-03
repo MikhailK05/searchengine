@@ -18,8 +18,7 @@ public class SiteBuilder implements Runnable{
 
     void appendToDB(PageNode rootNode) throws IOException {
         pageRepository.save(rootNode.convertToPage());
-        //TODO save page ↑ (i think it saves already, idk why i put this todo
-        // here in the first place, it was awhile ago)
+        //TODO save page ↑
         rootNode.getChildNodes().forEach(node -> {
             try {
                 appendToDB(node);
