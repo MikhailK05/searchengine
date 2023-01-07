@@ -41,6 +41,8 @@ public class ApiController {
 
     @GetMapping("/startIndexing")
     public void startIndexing(){
+        pageRepository.deleteAll();
+        siteRepository.deleteAll();
         ArrayList<searchengine.config.Site> sites = (ArrayList) list.getSites();
         for(int i = 0; i < sites.size(); i++){
             System.out.println(sites.get(i).getUrl());
@@ -64,5 +66,10 @@ public class ApiController {
             site.setStatus(Status.INDEXED);
             siteRepository.save(site);
         }
+    }
+
+    @GetMapping("/stopIndexing")
+    public void stopIndexing(){
+
     }
 }
