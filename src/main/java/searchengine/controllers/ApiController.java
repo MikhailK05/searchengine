@@ -29,6 +29,7 @@ public class ApiController {
     @Autowired
     private SiteRepository siteRepository;
     private final StatisticsService statisticsService;
+    private Thread[] threads;
 
     public ApiController(StatisticsService statisticsService) {
         this.statisticsService = statisticsService;
@@ -58,8 +59,10 @@ public class ApiController {
 
             PageNode root = new PageNode(sites.get(i).getUrl());
             PageProcessor processor = new PageProcessor(root, domain);
-            SiteBuilder builder = new SiteBuilder(processor, pageRepository);
-            new Thread(builder).start();
+            SiteBuilder builder = new SiteBuilder(processor, pageRepository, site);
+            Thread thread = new Thread(builder);
+            thread.start();
+            threads[i] = thread;
 
             site.setLastError("");
             site.setStatusTime(now);
@@ -70,6 +73,9 @@ public class ApiController {
 
     @GetMapping("/stopIndexing")
     public void stopIndexing(){
-
+        for (int i = 0; i < threads.length; i++){
+            Thread thread = threads[i];
+            thread.interrupt();
+        }
     }
 }
